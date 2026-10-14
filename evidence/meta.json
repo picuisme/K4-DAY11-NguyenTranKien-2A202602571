@@ -31,18 +31,18 @@
   },
   "mine": {
    "quick": false,
-   "at": "2026-10-14 17:36"
+   "at": "2026-10-14 18:57"
   },
   "export": {
    "quick": false,
-   "at": "2026-10-14 17:36"
+   "at": "2026-10-14 19:00"
   }
  },
  "_run": {
   "mssv": "202602571",
   "town": "D",
   "quick": false,
-  "step": "all",
+  "step": "export",
   "salted": false,
   "budgets": {
    "replay_n": 400,
