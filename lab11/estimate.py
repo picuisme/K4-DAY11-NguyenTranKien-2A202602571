@@ -12,7 +12,14 @@ from .search import proposal_logpdf
 def wilson_ci(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
     """TODO 4. Wilson score interval for k successes in n trials. Must behave at k = 0 (lower bound 0,
     upper bound > 0) where the plain normal interval collapses to [0, 0]. Return (0, 1) for n = 0."""
-    raise NotImplementedError("TODO 4: wilson_ci")
+    if n <= 0:
+        return (0.0, 1.0)
+    phat = k / n
+    z2 = z * z
+    denom = 1.0 + z2 / n
+    centre = (phat + z2 / (2 * n)) / denom
+    half = z * math.sqrt(phat * (1 - phat) / n + z2 / (4 * n * n)) / denom
+    return (max(0.0, centre - half), min(1.0, centre + half))
 
 
 def log_weights(Z, Bn, nat: space.Natural, prop: dict, beta: float = 0.2) -> np.ndarray:
@@ -21,7 +28,10 @@ def log_weights(Z, Bn, nat: space.Natural, prop: dict, beta: float = 0.2) -> np.
 
     nat.logpdf(Z, Bn) gives log p; proposal_logpdf(prop, Z, Bn) gives log of the CEM proposal.
     Use np.logaddexp so a weight of 1e-30 does not underflow to 0."""
-    raise NotImplementedError("TODO 6: log_weights")
+    logp = np.asarray(nat.logpdf(Z, Bn), float)
+    logq_prop = np.asarray(proposal_logpdf(prop, Z, Bn), float)
+    logq = np.logaddexp(math.log(1.0 - beta) + logq_prop, math.log(beta) + logp)
+    return logp - logq
 
 
 def is_estimate(logw: np.ndarray, y: np.ndarray, z: float = 1.96) -> dict:
@@ -31,7 +41,16 @@ def is_estimate(logw: np.ndarray, y: np.ndarray, z: float = 1.96) -> dict:
     se = std(w * y, ddof=1) / sqrt(n); CI = [max(0, p - z se), p + z se];
     Kish effective sample size ess = (sum w)^2 / sum(w^2).
     Return dict(p=, lo=, hi=, se=, ess=, n=)."""
-    raise NotImplementedError("TODO 7: is_estimate")
+    logw = np.asarray(logw, float)
+    y = np.asarray(y, float)
+    n = int(logw.shape[0])
+    w = np.exp(logw)
+    wy = w * y
+    p = float(wy.mean()) if n else 0.0
+    se = float(np.std(wy, ddof=1) / math.sqrt(n)) if n > 1 else 0.0
+    sw, sw2 = float(w.sum()), float((w ** 2).sum())
+    ess = sw * sw / sw2 if sw2 > 0 else 0.0
+    return dict(p=p, lo=max(0.0, p - z * se), hi=p + z * se, se=se, ess=float(ess), n=n)
 
 
 def rule_of_three(n_eff: float) -> float:

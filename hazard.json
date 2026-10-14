@@ -1,0 +1,32 @@
+{
+ "format": "avsim-studio/1",
+ "params": {},
+ "policy": {},
+ "hazards": [
+  {
+   "type": "ped",
+   "side": "S",
+   "x": 92,
+   "v": 1.8,
+   "t0": 0,
+   "trig": 38
+  }
+ ],
+ "ego": "planner",
+ "space": {
+  "h0_x": [
+   90,
+   104
+  ],
+  "h0_v": [
+   1.0,
+   2.4
+  ],
+  "h0_trig": [
+   18,
+   54
+  ]
+ },
+ "exposure": 0.04,
+ "why": "Người băng ngang không có vạch ngay truoc bến xe buýt (xe buýt đang đỗ ở x≈100–112 làn E2): hành khách vừa xuống xe / chạy sang đường để kịp xe. h0_x [90,104]: dải vỉa hè phía trước đầu xe buýt (đầu xe ở x≈100), nơi hành khách xuống xe băng qua; không vào vùng vạch 122 để tách khỏi kiểu crosswalk_block có sẵn. h0_v [1.0,2.4] m/s: 15th percentile đi bộ ≈1.0 m/s (Knoblauch 0.93–1.30; Exnicios 1.07; TRL PPR700), trung bình 1.2–1.56 m/s, đi vội trong pha clearance 1.56 m/s (Gates 2006), tối đa ≈ 1.3×tốc độ thường ≈ 1.9–2.4 m/s (Romero-Ortuno 2010); không vượt 2.5 m/s (chạy) theo is_feasible. h0_trig [18,54] m: khoảng cách tới xe đang đến mà người băng ngang chấp nhận, mean 30.1 m, SD 12.1 m (mean±2SD ≈ 6–54 m), gap mean 3.3 s (Yannis, Papadimitriou, Theofilatos 2013, Transportation Planning & Technology 36(5), N=243, mid-block Athens); cận dưới 18 m vì dưới đó ở 10–12 m/s là <1.5 s, gần như không ai chấp nhận. exposure 0.04 /chuyến: quan sát video 1,592 lượt xe buýt dừng ghi 60 xung đột người đi bộ–xe = 0.038 xung đột mỗi lượt dừng (Soltani Mandolakani, Subedi, Singleton, Mekker 2024, arXiv:2408.08890, Utah); thị trấn này có đúng một bến với xe buýt đang đỗ mỗi chuyến, nên ≈0.04 lần/chuyến. Đây là số ở Mỹ (có vạch gần đó); ở Hà Nội băng ngang giữa khối phổ biến hơn nên có thể là cận dưới."
+}
